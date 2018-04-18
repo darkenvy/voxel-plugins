@@ -1,3 +1,10 @@
+# Fork Differences
+I forked voxel-plugins to make one small change: make it compatible with Webpack. Webpack is unable to transpile code when require is used in any other way than static code at the top of the document. One of the features of voxel-plugins is to postpone the require procudure until needed. However this is something that had to be cut for compatibility. The benefits are negligable anyways.
+
+If others find this useful, let me know. I will put the extra work in to make this a feature and submit a pull-request with the official repo. Seeing as the project is old, I am unsure if other will use it. So emails are most welcome :)
+
+Now the original README.me below...
+
 # voxel-plugins
 
 An API for loading and enabling plugins in voxel.js with support for soft dependencies.
