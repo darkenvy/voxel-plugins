@@ -15,7 +15,6 @@ function Plugins(game, opts) {
 
   opts = opts || {};
   this.loaders = opts.loaders || {};
-  this.require = opts.require || require;
   this.catchExceptions = false;
   this.masterPluginName = opts.masterPluginName || 'voxel-engine'; // synthetic 'plugin' created as parent of all
 
@@ -48,13 +47,13 @@ Plugins.prototype.wrapExceptions = function(f) {
 
 // Require the plugin module and return its factory constructor
 // This does not construct the plugin instance, for that see instantiate()
-Plugins.prototype.scan = function(name) {
+Plugins.prototype.scan = function(name, reqPlugin) {
   var createPlugin; // factory for constructor
 
   if (name in this.loaders) {
     createPlugin = this.loaders[name];
   } else {
-    createPlugin = this.require(name);
+    createPlugin = this.loaders[name] = reqPlugin;
   }
 
   return createPlugin;
@@ -145,11 +144,11 @@ Plugins.prototype.preconfigure = function(name, opts) {
 
 // Add a plugin for loading: scan for ordered loading and preconfigure with given options
 // Special case: if the 'onDemand' option is set, the plugin won't be scanned at all, instead the pass configuration will be saved
-Plugins.prototype.add = function(name, opts) {
+Plugins.prototype.add = function(name, reqPlugin, opts) {
   if (!opts && !this.savedOpts[name]) throw new Error('voxel-plugins preload('+name+'): missing required options and not preconfigured');
   if (opts.onDemand) return this.preconfigure(name, opts);
 
-  var createPlugin = this.scan(name);
+  var createPlugin = this.scan(name, reqPlugin);
   if (!createPlugin)
     return false;
 
