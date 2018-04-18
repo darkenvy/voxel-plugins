@@ -3,7 +3,17 @@ I forked voxel-plugins to make one small change: make it compatible with Webpack
 
 If others find this useful, let me know. I will put the extra work in to make this a feature and submit a pull-request with the official repo. Seeing as the project is old, I am unsure if other will use it. So emails are most welcome :)
 
-Now the original README.me below...
+### New Usage
+The only difference compared to the original, is that you must pass in the require() as a second statement. An example as follows:
+
+```
+const plugins = createPlugins(game, {}); // dont include { require: require }. Webpack will yell; and useless now
+plugins.add('voxel-registry', require('voxel-registry'), {});
+plugins.add('voxel-highlight', require('voxel-highlight'), {});
+plugins.loadAll();
+```
+
+All that is happening is that we are requiring the modules statically instead of dynamically. 
 
 # voxel-plugins
 
